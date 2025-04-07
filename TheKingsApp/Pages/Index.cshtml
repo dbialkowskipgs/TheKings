@@ -1,0 +1,59 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome! Click to check answers for the below questions</h1>
+    <button id="getAnswers">Get answers</button>
+
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1. How many monarchs are there in the list?</td>
+                <td id="total"></td>
+            </tr>
+            <tr>
+                <td>2. Which monarch ruled the longest (and for how long)?</td>
+                <td id="longestRuleMonarch"></td>
+            </tr>
+            <tr>
+                <td>3. Which house ruled the longest (and for how long)?</td>
+                <td id="longestRuleHouse"></td>
+            </tr>
+            <tr>
+                <td>4. What was the most common first name?</td>
+                <td id="commonMonarchFirstName"></td>
+            </tr>
+        </tbody>
+    </table>
+    <p id="hiddenNotice" style="visibility:hidden">*The correct answer is 70 years. Api data is not up to date</p>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#getAnswers").click(function () {
+            $.ajax({
+                url: "/monarchs",
+                type: "GET",
+                success: function (data) {
+                    $("#total").text(data.total);
+                    $("#longestRuleMonarch").text(data.monarchName + " (*" + data.monarchYears + " years)");
+                    $("#longestRuleHouse").text(data.houseName + " (" + data.houseYears + " years)");
+                    $("#commonMonarchFirstName").text(data.commonName);
+                    $("#hiddenNotice").css("visibility", "visible");
+                },
+                error: function () {
+                    alert("Failed to load data.");
+                }
+            });
+        });
+    });
+</script>
