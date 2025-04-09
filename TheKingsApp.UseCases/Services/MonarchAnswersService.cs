@@ -67,8 +67,7 @@ namespace TheKingsApp.UseCases.Services
         private void FindLongestRuleMonarch(List<MonarchsDto> monarchsDtos, MonarchsAnswersDto monarchsAnswers)
         {
             var monarchsRuleTotalYears = monarchsDtos
-            .OrderByDescending(x => x.YearsOfRule)
-            .FirstOrDefault();
+            .MaxBy(x => x.YearsOfRule);
 
             monarchsAnswers.MonarchName = monarchsRuleTotalYears.Name;
             monarchsAnswers.MonarchYears = monarchsRuleTotalYears.YearsOfRule;
